@@ -1,0 +1,55 @@
+# rake(1) completion
+
+_should_rebuild_cache() {
+    local cache_retest=5    # How often to test the rake files for rebuild
+    local cache_expires=24  # How often to rebuild without testing
+    local cache_file=$1
+
+    if   [ ! -e "$cache_file" ]; then return 1
+    elif ( test `find "$cache_file" -mmin +$cache_expires` ); then return 1
+    elif ( test `find "$cache_file" -mmin +$cache_retest` ); then
+        if [ `find "$RAILS_ROOT" -name "*.rake" -ls | md5` != `head -n1 "$cache_file"` ]; then return 1; fi
+    fi
+    return 0
+}
+
+have rake && {
+_rake() {
+    local APWORDS
+
+    # find a rake file
+    local RAILS_ROOT=$PWD
+    while true; do
+        if   [ -e "$RAILS_ROOT/Rakefile" ]; then break
+        elif [ "$RAILS_ROOT" == "/" ];      then return
+        fi
+        RAILS_ROOT=`dirname $RAILS_ROOT`
+    done
+
+    # create the cache file if it doesn't exist or its old
+    local cache_file="$RAILS_ROOT/.cache_rake_t"
+    _should_rebuild_cache $cache_file
+    if [ $? -eq 1 ]; then
+        find "$RAILS_ROOT" -name "*.rake" -ls | md5 > "$cache_file"
+        rake -T | awk '/^rake / {print $2}' >> "$cache_file"
+    fi
+
+    # split the line on last ':', this is because complete uses ':' as a word separator (and changing that behavior breaks other completion scripts)
+    cur=`_get_cword`
+    colon_prefix=`echo "$cur" | grep -o '.*:'`
+    cur=${cur##*:}
+
+    # limit the APWORDS to tasks that match the colon_prefix and remove the colon_prefix
+    APWORDS=$( tail +2 $cache_file | grep "^$colon_prefix" | sed "s/^$colon_prefix//" )
+    COMPREPLY=( $( compgen -W "$APWORDS" -- "$cur" ) )
+}
+complete -o nospace -F _rake rake
+}
+
+# Local variables:
+# mode: shell-script
+# sh-basic-offset: 4
+# sh-indent-comment: t
+# indent-tabs-mode: nil
+# End:
+# ex: ts=4 sw=4 et filetype=sh
