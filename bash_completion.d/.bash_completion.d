@@ -1,0 +1,1 @@
+/Users/jnwheeler44/.bash_completion.d
