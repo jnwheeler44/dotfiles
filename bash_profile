@@ -14,8 +14,8 @@ alias br="be rake"
 # Your previous /Users/jnwheeler44/.bash_profile file was backed up as /Users/jnwheeler44/.bash_profile.macports-saved_2011-10-26_at_10:35:38
 ##
 
-if [ -f /opt/local/etc/bash_completion ]; then
-  . /opt/local/etc/bash_completion
+if [ -f `brew --prefix`/etc/bash_completion ]; then
+      . `brew --prefix`/etc/bash_completion
 fi
 
 if [ -f ~/.git-completion.sh ]; then
