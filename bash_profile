@@ -14,10 +14,6 @@ alias br="be rake"
 # Your previous /Users/jnwheeler44/.bash_profile file was backed up as /Users/jnwheeler44/.bash_profile.macports-saved_2011-10-26_at_10:35:38
 ##
 
-if [ -f `brew --prefix`/etc/bash_completion ]; then
-      . `brew --prefix`/etc/bash_completion
-fi
-
 if [ -f ~/.git-completion.sh ]; then
   . ~/.git-completion.bash
 fi
@@ -33,11 +29,12 @@ export PATH=/Users/jnwheeler44/bin:/opt/local/bin:/usr/local/bin:/opt/local/sbin
 # Setup Amazon EC2 Command-Line Tools
 export EC2_HOME=~/.ec2
 export PATH=$PATH:$EC2_HOME/bin
+export PATH=$PATH:/Users/jnwheeler44/.rbenv/versions/1.8.7-p370/lib/ruby/gems/1.8
+export PATH=$PATH:/usr/local/mysql/bin/
 export JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Home/
 export DYLD_LIBRARY_PATH="/usr/local/mysql/lib:$DYLD_LIBRARY_PATH"
 export PKG_CONFIG_PATH="/usr/local/Cellar/pkg-config/:$PKG_CONFIG_PATH"
 export GSL_CONFIG="/usr/local/Cellar/gsl/1.15/bin/gsl-config"
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 export RUBY_GC_MALLOC_LIMIT=60000000

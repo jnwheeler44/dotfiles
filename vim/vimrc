@@ -141,5 +141,5 @@ set showcmd
 if filereadable(expand("~/.vimrc.local"))
   source ~/.vimrc.local
 endif
-
+let $PATH=$PATH . ':/usr/local/bin/'
 call pathogen#infect()

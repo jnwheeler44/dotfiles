@@ -1,1 +1,4 @@
 .bin
+.ruby-version
+tmp/restart.txt
+tmp/attachment_fu/
